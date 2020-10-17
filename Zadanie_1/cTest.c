@@ -21,5 +21,4 @@ int main ()
     B.y1 = 4;
 
     printf("%lf",A.x1);
-    printf("%lf",A.y1);
 }
