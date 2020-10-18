@@ -62,7 +62,7 @@ int main ()
         W.x2 = min(A.x2, B.x2);
         W.y2 = max(A.y2, B.y2);
 
-        printf("Wspolrzedne lewego dolnego i prawego gornego rodu czesci wspolnej prostokatow A i B\n");
+        printf("Wspolrzedne lewego gornego i prawego dolnego rodu czesci wspolnej prostokatow A i B\n");
         printf("W.x1 = %d\nW.y1 = %d\nW.x2 = %d\nW.y2 = %d\n", W.x1, W.y1, W.x2, W.y2);
     }
 
