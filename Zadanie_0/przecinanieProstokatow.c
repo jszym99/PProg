@@ -36,21 +36,35 @@ int main ()
     A.y1 = 1; //spółrzędna y lewego dolnego rogu prostokąta A
 
     A.x2 = 1; //spółrzędna x prawego górnego rogu prostokąta A
-    A.y2 = 10; //spółrzędna y prawego górnego rogu prostokąta A
+    A.y2 = 1; //spółrzędna y prawego górnego rogu prostokąta A
 
-    B.x1 = 4; //spółrzędna x lewego dolnego rogu prostokąta B
-    B.y1 = 4; //spółrzędna y lewego dolnego rogu prostokąta B
+    B.x1 = 0; //spółrzędna x lewego dolnego rogu prostokąta B
+    B.y1 = 0; //spółrzędna y lewego dolnego rogu prostokąta B
     
-    B.x2 = 12; //spółrzędna x prawego górnego rogu prostokąta A
-    B.y2 = 12; //spółrzędna y prawego górnego rogu prostokąta A
+    B.x2 = 4; //spółrzędna x prawego górnego rogu prostokąta A
+    B.y2 = 4; //spółrzędna y prawego górnego rogu prostokąta A
 
-    W.x1 = max(A.x1, B.x1);
-    W.y1 = min(A.y1, B.y1);
-    W.x2 = max(A.x2, B.x2);
-    W.y2 = min(A.y2, B.y2);
+    if(A.x1 == A.x2 || A.y1 == A.y2)
+    {
+        if(A.x1 == A.y1 && A.x2 == A.y2)
+            printf("Prostokat A jest punktem");
+        else
+            printf("Prostokat A jest prosta");
+    } else if(B.x1 == B.x2 || B.y1 == B.y2)
+    {
+        if(B.x1 == B.y1 && B.x2 == B.y2)
+            printf("Prostokat B jest punktem");
+        else
+            printf("Prostokat B jest prosta");
+    }else{
+      W.x1 = max(A.x1, B.x1);
+        W.y1 = min(A.y1, B.y1);
+        W.x2 = max(A.x2, B.x2);
+        W.y2 = min(A.y2, B.y2);
 
-    printf("Wspolrzedne lewego dolnego i prawego gornego rodu czesci wspolnej prostokatow A i B\n");
-    printf("W.x1 = %d\nW.y1 = %d\nW.x2 = %d\nW.y2 = %d\n", W.x1, W.y1, W.x2, W.y2);
+        printf("Wspolrzedne lewego dolnego i prawego gornego rodu czesci wspolnej prostokatow A i B\n");
+        printf("W.x1 = %d\nW.y1 = %d\nW.x2 = %d\nW.y2 = %d\n", W.x1, W.y1, W.x2, W.y2);
+    }
 
     return 0;
 }
