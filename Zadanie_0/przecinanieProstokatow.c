@@ -32,17 +32,17 @@ int min (int a, int b) //sprawdzanie któraz z wartości jest mniejsza
 
 int main ()
 {
-    A.x1 = 1; //spółrzędna x lewego dolnego rogu prostokąta A
-    A.y1 = 1; //spółrzędna y lewego dolnego rogu prostokąta A
+    A.x1 = 3; //spółrzędna x lewego górnego rogu prostokąta A
+    A.y1 = 3; //spółrzędna y lewego górnego rogu prostokąta A
 
-    A.x2 = 1; //spółrzędna x prawego górnego rogu prostokąta A
-    A.y2 = 1; //spółrzędna y prawego górnego rogu prostokąta A
+    A.x2 = 5; //spółrzędna x prawego dolnego rogu prostokąta A
+    A.y2 = 1; //spółrzędna y prawego dolnego rogu prostokąta A
 
-    B.x1 = 0; //spółrzędna x lewego dolnego rogu prostokąta B
-    B.y1 = 0; //spółrzędna y lewego dolnego rogu prostokąta B
+    B.x1 = 2; //spółrzędna x lewego górnego rogu prostokąta B
+    B.y1 = 4; //spółrzędna y lewego górnego rogu prostokąta B
     
-    B.x2 = 4; //spółrzędna x prawego górnego rogu prostokąta A
-    B.y2 = 4; //spółrzędna y prawego górnego rogu prostokąta A
+    B.x2 = 4; //spółrzędna x prawego dolnego rogu prostokąta A
+    B.y2 = 2; //spółrzędna y prawego dolnego rogu prostokąta A
 
     if(A.x1 == A.x2 || A.y1 == A.y2)
     {
@@ -57,10 +57,10 @@ int main ()
         else
             printf("Prostokat B jest prosta");
     }else{
-      W.x1 = max(A.x1, B.x1);
+        W.x1 = max(A.x1, B.x1);
         W.y1 = min(A.y1, B.y1);
-        W.x2 = max(A.x2, B.x2);
-        W.y2 = min(A.y2, B.y2);
+        W.x2 = min(A.x2, B.x2);
+        W.y2 = max(A.y2, B.y2);
 
         printf("Wspolrzedne lewego dolnego i prawego gornego rodu czesci wspolnej prostokatow A i B\n");
         printf("W.x1 = %d\nW.y1 = %d\nW.x2 = %d\nW.y2 = %d\n", W.x1, W.y1, W.x2, W.y2);
