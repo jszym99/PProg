@@ -2,4 +2,4 @@ Założenia:
 Liczby a, b, c oraz x są liczbami rzeczywistymi. Miejsca zerowe znajdują się w zbiorze liczb rzeczywistych.
 
 Testowanie:
-Uruchomienie programu dla wartości skrajnych (a~0, a~0 oraz b~0).
+Uruchomienie programu dla wartości skrajnych (a~0, a~inf).
