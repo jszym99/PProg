@@ -18,7 +18,7 @@
             if(b != 0.0)
                 printf("To jest rownanie liniowe. x = %f\n", -c/b);
             else if(c == 0.0)
-                printf("Rozwiazaniem jesy dowoly x\n");
+                printf("Rozwiazaniem jest dowoly x\n");
             else
                 printf("Brak rozwiazan\ny = %f\n", c);
         }
@@ -55,7 +55,7 @@
             if(b != 0.0)
                 printf("To jest rownanie liniowe. x = %f\n", -c/b);
             else if(c == 0.0)
-                printf("Rozwiazaniem jesy dowoly x\n");
+                printf("Rozwiazaniem jest dowoly x\n");
             else
                 printf("Brak rozwiazan\ny = %f\n", c);
         }
@@ -91,7 +91,7 @@
             if(b != 0.0)
                 printf("To jest rownanie liniowe. x = %f\n", -c/b);
             else if(c == 0.0)
-                printf("Rozwiazaniemjesy dowoly x\n");
+                printf("Rozwiazaniemjest dowoly x\n");
             else
                 printf("Brak rozwiazan\ny = %f\n", c);
         }
@@ -127,7 +127,7 @@
             if(b != 0.0)
                 printf("To jest rownanie liniowe. x = %f\n", -c/b);
             else if(c == 0.0)
-                printf("Rozwiazaniem jesy dowoly x\n");
+                printf("Rozwiazaniem jest dowoly x\n");
             else
                 printf("Brak rozwiazan\ny = %f\n", c);
         }
@@ -162,7 +162,7 @@
             if(b != 0.0)
                 printf("To jest rownanie liniowe. x = %f\n", -c/b);
             else if(c == 0.0)
-                printf("Rozwiazaniem jesy dowoly x\n");
+                printf("Rozwiazaniem jest dowoly x\n");
             else
                 printf("Brak rozwiazan\ny = %f\n", c);
         }
@@ -198,7 +198,7 @@
             if(b != 0.0)
                 printf("To jest rownanie liniowe. x = %f\n", -c/b);
             else if(c == 0.0)
-                printf("Rozwiazaniem jesy dowoly x\n");
+                printf("Rozwiazaniem jest dowoly x\n");
             else
                 printf("Brak rozwiazan\ny = %f\n", c);
         }
@@ -233,7 +233,7 @@
             if(b != 0.0)
                 printf("To jest rownanie liniowe. x = %f\n", -c/b);
             else if(c == 0.0)
-                printf("Rozwiazaniem jesy dowoly x\n");
+                printf("Rozwiazaniem jest dowoly x\n");
             else
                 printf("Brak rozwiazan\ny = %f\n", c);
         }
@@ -269,7 +269,7 @@
             if(b != 0.0)
                 printf("To jest rownanie liniowe. x = %f\n", -c/b);
             else if(c == 0.0)
-                printf("Rozwiazaniem jesy dowoly x\n");
+                printf("Rozwiazaniem jest dowoly x\n");
             else
                 printf("Brak rozwiazan\ny = %f\n", c);
         }
