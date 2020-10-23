@@ -150,10 +150,10 @@
             printf("Brak rozwiazan rzerczywistych\n");
         }
 
-    //Test 5 a = 1, b = 4, c = 4
+    //Test 5 a = 1, b = 0, c = 0
         a = 1;
-        b = 4;
-        c = 4;
+        b = 0;
+        c = 0;
 
         printf("\nTest 5\na = %f, b = %f, c = %f\n", a, b, c);
 
