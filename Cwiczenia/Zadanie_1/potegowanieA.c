@@ -1,30 +1,28 @@
     #include <stdio.h>
+    #include <stdlib.h>
 
     int main ()
     {
-        int x = 0, n = 0, pow = 0;
+        int x, n, pow;
         printf("Podaj liczbe x\n");
         scanf("%d", &x);
-        printf("Potege n\n");
-        scanf("%d", &n);
-        printf("x = %d\n", x);
-        printf("n = %d\n", n);
-
-        pow = x;
-
-        if (x == 0)
-            pow = 0;
-        else if(n == 0)
-            pow = 1;
-        else if(n == 1)
-            pow = x;
-        else
-        {
-            for(int i = 0; i < n-1; i++)
-                pow *= x;
-        }
         
-        printf("%d^%d = %d", x, n, pow);
+        printf("Podaj potege n\n");
+        scanf("%d", &n);
 
+        pow = x; //Przypisanie pierwszej potęgi x
+
+        if(n == 0) //Jeśli potęga jest zerowa wynik będzie 1 niezależnie od podstawy potęgi
+            pow = 1;
+        else if(x != 0) //Obliczanie pitęgi z użyciem mnożenia
+        {
+            for(int i = 1; i < abs(n); i++) //Mnożenien każdej poprzedniej potęgi przez x n razy zaczynając od x^1
+                pow *= x;
+
+        }
+        if(n<0) //Wyświetlanie ułamka jeśli potęga n jest ujemna
+            printf("%d^(%d) = 1/%d", x, n, pow);
+        else
+            printf("%d^%d = %d", x, n, pow);
         return 0;
     }
