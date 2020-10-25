@@ -31,9 +31,9 @@
         }
 
         if(n<0) //Wyświetlanie ułamka jeśli potęga n jest ujemna
-            printf("%d^(%d) = 1/%d", x, n, pow);
+            printf("%d^(%d) = 1/%d\n", x, n, pow);
         else
-            printf("%d^%d = %d", x, n, pow);
+            printf("%d^%d = %d\n", x, n, pow);
 
         return 0;
     }
