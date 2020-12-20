@@ -155,7 +155,6 @@ int main()
     if (plik != NULL)
         {
             negatyw(&obraz, &wymx, &wymy, &odcieni);
-            fclose(plik);
         }
     /* Wyswietlenie poprawnie wczytanego obrazu zewnetrznym programem */
     //if (odczytano != 0)
@@ -172,14 +171,12 @@ int main()
         fclose(plik);
     }
 
-    wyswietl(nazwa);
+    //wyswietl(nazwa);
 
     for(int i = 0; i < wymy; i++)
     {
         free(obraz[i]);
-        obraz[i] = NULL;
     }
     free(obraz);
-    obraz = NULL;
     return odczytano;
 }
