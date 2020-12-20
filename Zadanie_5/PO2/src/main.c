@@ -174,7 +174,10 @@ int main()
 
     wyswietl(nazwa);
 
+    for(int i = 0; i < wymy; i++)
+    {
+        free(obraz[i]);
+    }
     free(obraz);
-    free(*obraz);
     return odczytano;
 }
