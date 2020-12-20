@@ -3,8 +3,8 @@
 
 /* typ do przechowywania obrazów monochoromatycznych */
 typedef struct {
-int wym_x, wym_y, odcieni;
-void *piksele; 
+int wymx, wymy, odcienie;
+int **piksele;
 } t_obraz;
 
 #endif
