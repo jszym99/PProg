@@ -177,7 +177,9 @@ int main()
     for(int i = 0; i < wymy; i++)
     {
         free(obraz[i]);
+        obraz[i] = NULL;
     }
     free(obraz);
+    obraz = NULL;
     return odczytano;
 }
