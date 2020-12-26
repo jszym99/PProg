@@ -88,6 +88,9 @@ void kontur(t_obraz *obraz_kontur)
         for (int j = 0; j < obraz_kontur->wymx - 1; j++)
         {
             obraz_kontur->piksele[i][j] = abs(obraz_kontur->piksele[i][j+1]  - obraz_kontur->piksele[i][j]) + abs(obraz_kontur->piksele[i+1][j] - obraz_kontur->piksele[i][j]);
+
+            if(obraz_kontur->piksele[i][j] > obraz_kontur->odcienie)
+                obraz_kontur->piksele[i][j] = obraz_kontur->odcienie; 
         }
     }
 }
