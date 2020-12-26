@@ -4,19 +4,6 @@
 
 #define DL_LINII 1024
 
-/************************************************************************************
- * Funkcja wczytuje obraz PGM z pliku do tablicy       	       	       	       	    *
- *										    *
- * \param[in] plik_we uchwyt do pliku z obrazem w formacie PGM			    *
- * \param[out] obraz_pgm tablica, do ktorej zostanie zapisany obraz		    *
- * \param[out] wymx szerokosc obrazka						    *
- * \param[out] wymy wysokosc obrazka						    *
- * \param[out] szarosci liczba odcieni szarosci					    *
- * \return liczba wczytanych pikseli						    *
- ************************************************************************************/
-
-
-
 int czytaj(FILE *plik_we, t_obraz *obraz_pgm)
 {
     char buf[DL_LINII]; /* bufor pomocniczy do czytania naglowka i komentarzy */
@@ -90,10 +77,15 @@ int czytaj(FILE *plik_we, t_obraz *obraz_pgm)
     return obraz_pgm->wymx * obraz_pgm->wymy; /* Czytanie zakonczone sukcesem    */
 } /* Zwroc liczbe wczytanych pikseli */
 
-
-
 void zapisz (FILE *plik_wy, t_obraz *obraz_zapisz)
 {
+    /*Sprawdzenie czy podano prawidłowy uchwyt pliku */
+    if (plik_wy == NULL)
+    {
+        fprintf(stderr, "Blad: Nie podano uchwytu do pliku\n");
+        return (0);
+    }
+
     fprintf(plik_wy, "P2\n");
     fprintf(plik_wy, "# Komentarz\n");
     fprintf(plik_wy, "%d %d\n", obraz_zapisz->wymx, obraz_zapisz->wymy);

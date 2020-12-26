@@ -4,7 +4,6 @@
 #include "filtry.h"
 #include "pliki_pgm.h"
 
-//#define MAX 512       /* Maksymalny rozmiar wczytywanego obrazu */
 #define DL_LINII 1024 /* Dlugosc buforow pomocniczych */
 
 /* Wyswietlenie obrazu o zadanej nazwie za pomoca programu "display"   */
@@ -23,9 +22,12 @@ int main()
 {
     t_obraz obraz;
 
-    int odczytano, prog = 0;
-    FILE *plik;
-    char nazwa[100];
+    int odczytano = 0; // ilość pikseli odczytanych z pliku
+    int czern = 0;
+    int biel = 255;
+    float prog;
+    FILE *plik;      // uchwyt do pliku
+    char nazwa[100]; // nazwa pliku
 
     /* Wczytanie zawartosci wskazanego pliku do pamieci */
     printf("Podaj nazwe pliku:\n");
@@ -39,22 +41,15 @@ int main()
         fclose(plik);
     }
 
-    //printf("%d\n", odczytano);
-
     //Odwróć i zapisz plik
     if (plik != NULL)
     {
-        //negatyw(&obraz);
-        printf("Podaj wartosc progu:\n");
-        scanf("%d", &prog);
-
-        polProgowanieCzerni(&obraz, prog);
+        negatyw(&obraz);
     }
-    
+
     printf("Podaj nazwe pliku wyjsciowego:\n");
     scanf("%s", nazwa);
     plik = fopen(nazwa, "w");
-
 
     /* Zapisywanie przetworzonego obrazu do pliku */
     if (plik != NULL)
@@ -63,14 +58,12 @@ int main()
         fclose(plik);
     }
 
-
     /* Zwalnianie pamięci przypisanej do tablicy */
-    for(int i = 0; i < obraz.wymy; i++)
+    for (int i = 0; i < obraz.wymy; i++)
     {
         free(obraz.piksele[i]);
     }
     free(obraz.piksele);
-
 
     /* Wyswietlenie poprawnie wczytanego obrazu zewnetrznym programem */
     if (odczytano != 0)
