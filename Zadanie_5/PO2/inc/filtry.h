@@ -45,7 +45,7 @@ void polProgowanieCzerni(t_obraz *, int);
  * \param[in] pGamma wartość parametru gamma
  * \param[out] obraz_gamma struktura, do ktorej zostaje zapisany przeskalowany obraz
  ************************************************************************************/
-void gamma(t_obraz *, float);
+void korGamma(t_obraz *, float);
 
 /************************************************************************************
  * Funkcja wylicza nowe poziomy czerni i bieli
@@ -88,5 +88,13 @@ void rozmywaniePion(t_obraz *);
  * \param[out] obraz_histo struktura, do ktorej zostaje zapisany rozciągnięty obraz
  ************************************************************************************/
 void rozciaganieHisto(t_obraz *);
+
+/************************************************************************************
+ * Funkcja zamienia obraz kolorowy na czarno-biały
+ *
+ * \param[in] obraz_szary struktura zawierajaca przetwarzany obraz
+ * \param[out] obraz_szary struktura, do ktorej zostaje zapisany czarno-biały obraz
+ ************************************************************************************/
+void szarosci(t_obraz *);
 
 #endif

@@ -11,6 +11,7 @@
 #define B_BRAKNAZWY -2
 #define B_BRAKWARTOSCI -3
 #define B_BRAKPLIKU -4
+#define B_NIEPOPRAWNAWARTOSC -5
 
 /* Wyswietlenie obrazu o zadanej nazwie za pomoca programu "display"   */
 void wyswietl(char *n_pliku)
@@ -24,10 +25,12 @@ void wyswietl(char *n_pliku)
     system(polecenie);         /* wykonanie polecenia        */
 }
 
+//funkcja zerująca flagi opcji
 void wyzeruj_opcje(t_opcje *wybor)
 {
     wybor->plik_we = NULL;
     wybor->plik_wy = NULL;
+    wybor->kolor = 0;
     wybor->negatyw = 0;
     wybor->konturowanie = 0;
     wybor->progowanie = 0;
@@ -41,11 +44,13 @@ void wyzeruj_opcje(t_opcje *wybor)
     wybor->wyswietlenie = 0;
 }
 
-int przetwarzaj_opcje(int argc, char **argv, t_opcje *wybor)
+//funkcja rozpoznająca opcje po argumentach wejściowych programu
+int przetwarzaj_opcje(int argc, char **argv, t_opcje *wybor) //TODO: wyświetlanie obrzu (funkcja d)
 {
-    int prog;
-    float pGamma;
-    char *nazwa_pliku_we, *nazwa_pliku_wy;
+    int prog, czern, biel;                 //zmienne pomocnicze przechowujące wartośći argumentów wejściowych
+    float pGamma;                          //zmienna pomocnicza przechowująca wartość argumentu wejściowego (gamma)
+    char *nazwa_pliku_we, *nazwa_pliku_wy; ///zmienne pomocnicze przechowujące uchwyty do pliku wejściowego/wyjściowego
+    char kol;                              //zmienna pomocnicza przechowująca znak argumentu m
 
     wyzeruj_opcje(wybor);
     wybor->plik_wy = stdout; /* na wypadek gdy nie podano opcji "-o" */
@@ -78,72 +83,47 @@ int przetwarzaj_opcje(int argc, char **argv, t_opcje *wybor)
                 if (strcmp(nazwa_pliku_wy, "-") == 0) /* gdy nazwa jest "-"         */
                     wybor->plik_wy = stdout;          /* ustwiamy wyjscie na stdout */
                 else                                  /* otwieramy wskazany plik    */
+                {
                     wybor->plik_wy = fopen(nazwa_pliku_wy, "w");
+                    wybor->nazwa_pliku = nazwa_pliku_wy;
+                }
             }
             else
                 return B_BRAKNAZWY; /* blad: brak nazwy pliku */
             break;
         }
-        case 'p': // prog
-        {
-            if (argv[i][2] == 0)
-            {
-                if (++i < argc)
-                { /* wczytujemy kolejny argument jako wartosc progu */
-                    if (sscanf(argv[i], "%d", &prog) == 1)
-                    {
-                        wybor->progowanie = 1;
-                        wybor->w_progu = prog;
-                    }
-                    else
-                        return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
-                }
-                else
-                    return B_BRAKWARTOSCI; /* blad: brak wartosci progu */
-                break;
-            }
-            else if (argv[i][2] == 'b')
-            {
-                if (++i < argc)
-                { /* wczytujemy kolejny argument jako wartosc progu */
-                    if (sscanf(argv[i], "%d", &prog) == 1)
-                    {
-                        wybor->pol_prog_biel = 1;
-                        wybor->w_progu = prog;
-                    }
-                    else
-                        return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
-                }
-                else
-                    return B_BRAKWARTOSCI; /* blad: brak wartosci progu */
-                break;
-            }
-            else if (argv[i][2] == 'c')
-            {
-                if (++i < argc)
-                { /* wczytujemy kolejny argument jako wartosc progu */
-                    if (sscanf(argv[i], "%d", &prog) == 1)
-                    {
-                        wybor->pol_prog_czern = 1;
-                        wybor->w_progu = prog;
-                    }
-                    else
-                        return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
-                }
-                else
-                    return B_BRAKWARTOSCI; /* blad: brak wartosci progu */
-                break;
-            }else
-                return B_NIEPOPRAWNAOPCJA;                
-        }
-        case 'g': // gamma
+        case 'm': // kolor
         {
             if (++i < argc)
-            { /* wczytujemy kolejny argument jako wartosc progu */
-                if (sscanf(argv[i], "%f", &pGamma) == 1)
+            { /* wczytujemy kolejny argument jako wartosc argumentu */
+                if (sscanf(argv[i], "%c", &kol) == 1)
                 {
-                    wybor->gamma = 1;
-                    wybor->w_gamma = pGamma;
+                    wybor->kolor = 1;
+                    switch (kol)
+                    {
+                    case 's': // zamiana obrazu na czarno-biały
+                    {
+                        wybor->w_kol = -1;
+                        break;
+                    }
+                    case 'r': // operacje tylko na kolorze czerwonym
+                    {
+                        wybor->w_kol = 1;
+                        break;
+                    }
+                    case 'g': // operacje tylko na kolorze zielonym
+                    {
+                        wybor->w_kol = 2;
+                        break;
+                    }
+                    case 'b': // operacje tylko na kolorze niebieskim
+                    {
+                        wybor->w_kol = 3;
+                        break;
+                    }
+                    default:
+                        return B_NIEPOPRAWNAWARTOSC;
+                    }
                 }
                 else
                     return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
@@ -152,14 +132,110 @@ int przetwarzaj_opcje(int argc, char **argv, t_opcje *wybor)
                 return B_BRAKWARTOSCI; /* blad: brak wartosci progu */
             break;
         }
-        case 'z':
+        case 'p': // progowanie
+        {
+            if (argv[i][2] == 0)
+            {
+                if (++i < argc)
+                { /* wczytujemy kolejny argument jako wartosc progu */
+                    if (sscanf(argv[i], "%d", &prog) == 1)
+                    {
+                        if (prog < 0 || prog > 100)
+                            return B_NIEPOPRAWNAWARTOSC;
+                        else
+                        {
+                            wybor->progowanie = 1;
+                            wybor->w_progu = prog;
+                        }
+                    }
+                    else
+                        return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
+                }
+                else
+                    return B_BRAKWARTOSCI; /* blad: brak wartosci progu */
+                break;
+            }
+            else if (argv[i][2] == 'b') //polprogowanie bieli
+            {
+                if (++i < argc)
+                { /* wczytujemy kolejny argument jako wartosc progu */
+                    if (sscanf(argv[i], "%d", &prog) == 1)
+                    {
+                        if (prog < 0 || prog > 100)
+                            return B_NIEPOPRAWNAWARTOSC;
+                        else
+                        {
+                            wybor->pol_prog_biel = 1;
+                            wybor->w_progu = prog;
+                        }
+                    }
+                    else
+                        return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
+                }
+                else
+                    return B_BRAKWARTOSCI; /* blad: brak wartosci progu */
+                break;
+            }
+            else if (argv[i][2] == 'c') //polprogowanie czerni
+            {
+                if (++i < argc)
+                { /* wczytujemy kolejny argument jako wartosc progu */
+                    if (sscanf(argv[i], "%d", &prog) == 1)
+                    {
+                        if (prog < 0 || prog > 100)
+                            return B_NIEPOPRAWNAWARTOSC;
+                        else
+                        {
+                            wybor->pol_prog_czern = 1;
+                            wybor->w_progu = prog;
+                        }
+                    }
+                    else
+                        return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
+                }
+                else
+                    return B_BRAKWARTOSCI; /* blad: brak wartosci progu */
+                break;
+            }
+            else
+                return B_NIEPOPRAWNAOPCJA;
+        }
+        case 'g': // gamma
         {
             if (++i < argc)
-            {                                          /* wczytujemy kolejny argument jako wartosc progu */
-                if (sscanf(argv[i], "%d", &prog) == 1) //TODO: wczytywanie 2 wartości
+            { /* wczytujemy kolejny argument jako wartosc progu */
+                if (sscanf(argv[i], "%f", &pGamma) == 1)
                 {
-                    wybor->progowanie = 1;
-                    wybor->w_progu = prog;
+                    if (pGamma > 0)
+                    {
+                        wybor->gamma = 1;
+                        wybor->w_gamma = pGamma;
+                    }
+                    else
+                        return B_NIEPOPRAWNAWARTOSC;
+                }
+                else
+                    return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
+            }
+            else
+                return B_BRAKWARTOSCI; /* blad: brak wartosci progu */
+            break;
+        }
+        case 'z': // zmiana poziomów czerni i bieli
+        {
+            if (++i < argc)
+            { /* wczytujemy kolejny argument jako wartosc progu */
+                if (sscanf(argv[i++], "%d", &czern) == 1 && sscanf(argv[i], "%d", &biel) == 1)
+                {
+                    if ((czern - biel) < 0 || czern < 0 || biel < 0)
+                        return B_NIEPOPRAWNAWARTOSC;
+                    else
+                    {
+                        wybor->zmiana_poz = 1;
+                        wybor->w_czern = czern;
+                        wybor->w_biel = biel;
+                        printf("%d, %d\n", wybor->w_czern, wybor->w_biel);
+                    }
                 }
                 else
                     return B_BRAKWARTOSCI; /* blad: niepoprawna wartosc progu */
@@ -178,11 +254,11 @@ int przetwarzaj_opcje(int argc, char **argv, t_opcje *wybor)
             wybor->konturowanie = 1;
             break;
         }
-        case 'r': // rozmywanie poziome
+        case 'r': // rozmywanie...
         {
-            if (argv[i][2] == 'x')
+            if (argv[i][2] == 'x') // ...poziome
                 wybor->rozm_x = 1;
-            else if (argv[i][2] == 'y')
+            else if (argv[i][2] == 'y') // ...pionowe
                 wybor->rozm_y = 1;
             else
                 return B_NIEPOPRAWNAOPCJA;
@@ -218,14 +294,36 @@ int main(int argc, char **argv)
     int odczytano = 0; // ilość pikseli odczytanych z pliku
     int flaga = 0;
 
-    flaga = przetwarzaj_opcje(argc, argv, &opcje);
+    flaga = przetwarzaj_opcje(argc, argv, &opcje); // poprawność wywołania programu
 
     if (!flaga)
     {
+        // Wczytywanie obraz z pliku
         odczytano = czytaj(opcje.plik_we, &obraz);
         fclose(opcje.plik_we);
 
         //printf("%d\n", odczytano);
+
+        if (opcje.kolor)
+        {
+            if (obraz.typ == 3)
+                obraz.kolor = opcje.w_kol;
+            else
+            {
+                printf("ERROR: NIEPOPRAWNA WARTOSC ARGUMENTU DLA TEGO TYPU PLIKU\n");
+                return 0;
+            }
+        }
+        else
+            obraz.kolor = 0;
+
+        //printf("%d\n", obraz.typ);
+        
+        // zamiana na czarnobiały tylko jeśli jest kolorowy
+        if ((obraz.kolor == -1) && (obraz.typ == 3))
+            szarosci(&obraz);
+
+        //printf("%d\n", obraz.kolor);
 
         if (opcje.negatyw)
             negatyw(&obraz);
@@ -236,7 +334,7 @@ int main(int argc, char **argv)
         if (opcje.pol_prog_czern)
             polProgowanieCzerni(&obraz, opcje.w_progu);
         if (opcje.gamma)
-            gamma(&obraz, opcje.w_gamma);
+            korGamma(&obraz, opcje.w_gamma);
         if (opcje.zmiana_poz)
             zmianaPoz(&obraz, opcje.w_czern, opcje.w_biel);
         if (opcje.konturowanie)
@@ -248,12 +346,46 @@ int main(int argc, char **argv)
         if (opcje.roz_histo)
             rozciaganieHisto(&obraz);
 
+        // Zapisywanie przetworzonego obrazu do pliku
         zapisz(opcje.plik_wy, &obraz);
         fclose(opcje.plik_wy);
+
+        /* Wyswietlenie poprawnie wczytanego obrazu zewnetrznym programem */
+        if (opcje.wyswietlenie)
+            wyswietl(opcje.nazwa_pliku);
     }
     else
     {
-        
+        switch (flaga)
+        {
+        case -1:
+        {
+            printf("ERROR: NIEPOPRAWNA OPCJA\n");
+            break;
+        }
+        case -2:
+        {
+            printf("ERROR: BRAK NAZWY PLIKU\n");
+            break;
+        }
+        case -3:
+        {
+            printf("ERROR: BRAK WARTOSCI ARGUMENTU\n");
+            break;
+        }
+        case -4:
+        {
+            printf("ERROR: BRAK PLIKU O PODANEJ NAZWIE\n");
+            break;
+        }
+        case -5:
+        {
+            printf("ERROR: NIEPOPRAWNA WARTOSC ARGUMENTU\n");
+            break;
+        }
+        default:
+            printf("ERROR: NO IDEA WHAT WENT WRONG :/\n");
+        }
     }
 
     /* Zwalnianie pamięci przypisanej do tablicy */
@@ -262,10 +394,6 @@ int main(int argc, char **argv)
         free(obraz.piksele[i]);
     }
     free(obraz.piksele);
-
-    /* Wyswietlenie poprawnie wczytanego obrazu zewnetrznym programem */
-    /*if (odczytano != 0)
-        wyswietl(nazwa);*/
 
     return odczytano;
 }

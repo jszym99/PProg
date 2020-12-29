@@ -18,15 +18,21 @@ int czytaj(FILE *plik_we, t_obraz *obraz_pgm)
         return (0);
     }
 
-    /* Sprawdzenie "numeru magicznego" - powinien być P2 */
+    /* Sprawdzenie "numeru magicznego" - powinien być P2 lub P3 */
     if (fgets(buf, DL_LINII, plik_we) == NULL) /* Wczytanie pierwszej linii pliku do bufora */
         koniec = 1;                            /* Nie udalo sie? Koniec danych! */
 
-    if ((buf[0] != 'P') || (buf[1] != '2') || koniec)
-    { /* Czy jest magiczne "P2"? */
+    /* Czy jest magiczne "P2 lub P3"? */
+    if ((buf[0] != 'P') || (buf[1] != '2') && (buf[1] != '3') || koniec)
+    { 
         fprintf(stderr, "Blad: To nie jest plik PGM\n");
         return (0);
     }
+
+    if((buf[0] == 'P') && (buf[1] == '3'))
+        obraz_pgm->typ = 3; // obraz jest kolorowy
+    else
+        obraz_pgm->typ = 1; // obraz jest czarno-biały
 
     /* Pominiecie komentarzy */
     do
@@ -56,7 +62,7 @@ int czytaj(FILE *plik_we, t_obraz *obraz_pgm)
         //printf("Blad: Nie udalo sie przypisac pamiecio");
     for(int i = 0; i < obraz_pgm->wymy; i++)
     {
-        obraz_pgm->piksele[i] = malloc(obraz_pgm->wymx * sizeof(int));
+        obraz_pgm->piksele[i] = malloc(obraz_pgm->typ * obraz_pgm->wymx * sizeof(int)); // 3x więcej jeśli obraz jest kolorowy
         //if((*obraz_pgm)[i] == NULL)
             //printf("Blad: Nie udalo sie przypisac pamiecio");
     }
@@ -64,7 +70,7 @@ int czytaj(FILE *plik_we, t_obraz *obraz_pgm)
     /* Pobranie obrazu i zapisanie w tablicy obraz_pgm*/
     for (i = 0; i < obraz_pgm->wymy; i++)
     {
-        for (j = 0; j < obraz_pgm->wymx; j++)
+        for (j = 0; j < (obraz_pgm->wymx * obraz_pgm->typ); j++)
         {
             if (fscanf(plik_we, "%d", &(obraz_pgm->piksele)[i][j]) != 1)
             {
@@ -83,16 +89,19 @@ void zapisz (FILE *plik_wy, t_obraz *obraz_zapisz)
     if (plik_wy == NULL)
     {
         fprintf(stderr, "Blad: Nie podano uchwytu do pliku\n");
-        return (0);
     }
 
-    fprintf(plik_wy, "P2\n");
+    if(obraz_zapisz->typ == 1)
+        fprintf(plik_wy, "P2\n");
+    else if(obraz_zapisz->typ == 3)
+        fprintf(plik_wy, "P3\n");
+
     fprintf(plik_wy, "# Komentarz\n");
     fprintf(plik_wy, "%d %d\n", obraz_zapisz->wymx, obraz_zapisz->wymy);
     fprintf(plik_wy, "%d\n", obraz_zapisz->odcienie);
     for (int i = 0; i < obraz_zapisz->wymy; i++)
     {
-        for (int j = 0; j < obraz_zapisz->wymx; j++)
+        for (int j = 0; j < (obraz_zapisz->wymx * obraz_zapisz->typ); j++)
         {
             fprintf(plik_wy, "%d ", obraz_zapisz->piksele[i][j]);
         }
