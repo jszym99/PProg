@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-//stack node structure
-struct node
-{
-    int data;
-    struct node* next;
-};
+#include "stack.h"
 
 //initiate the stack
 void init(struct node* head)
@@ -30,7 +24,7 @@ struct node* push(struct node* head, int data)
 }
 
 //take an element from the stack
-struct node* pop(struct node *head,int *element)
+struct node* pop(struct node *head, int *element)
 {
     struct node* tmp = head;
     *element = head->data;
@@ -46,4 +40,32 @@ int empty(struct node* head)
         return 1;
     else
         return 0;
+}
+
+void display(struct node* head)
+{
+    struct node *current;
+    current = head;
+    if(current != NULL)
+    {
+        printf("Stack: ");
+        do
+        {
+            printf("%d ",current->data);
+            current = current->next;
+        }
+        while (current!= NULL);
+        printf("\n");
+    }
+    else
+        printf("The Stack is empty\n");
+ 
+}
+
+void top(struct node* head)
+{
+    if(head != NULL)
+        printf("%d\n", head->data);
+    else
+        printf("The Stack is empty\n");
 }
